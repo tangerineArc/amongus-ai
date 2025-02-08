@@ -6,7 +6,7 @@ from constants import *
 from groups import AllSprites
 from player import Player
 from sprites import *
-
+# hello world
 class Game:
   def __init__(self):
     pygame.init()
