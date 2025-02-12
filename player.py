@@ -2,6 +2,7 @@ import pygame
 from os import walk
 from os.path import join
 
+
 class Player(pygame.sprite.Sprite):
   def __init__(self, pos, groups, collision_sprites):
     super().__init__(groups)
@@ -72,3 +73,20 @@ class Player(pygame.sprite.Sprite):
     self.input()
     self.move(dt)
     self.animate(dt)
+
+
+#     # Ensure unique integer positions
+#     self.unique_positions = getattr(self, "unique_positions", set())
+
+# # Convert position to integers
+#     int_x = int(self.rect.topleft[0])
+#     int_y = int(self.rect.topleft[1])
+
+# # Store unique integer positions
+#     if (int_x, int_y) not in self.unique_positions:
+#         self.unique_positions.add((int_x, int_y))
+#         print(f"New Unique Position: ({int_x}, {int_y})")
+
+
+
+

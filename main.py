@@ -7,6 +7,9 @@ from groups import AllSprites
 from player import Player
 from sprites import *
 
+from WELCOME import welcome
+
+
 class Game:
   def __init__(self):
     pygame.init()
@@ -37,7 +40,7 @@ class Game:
 
   def run(self):
     while self.running:
-      dt = self.clock.tick() / 1000
+      dt = self.clock.tick(40) / 1000
 
       # Event loop
       for event in pygame.event.get():
@@ -54,5 +57,37 @@ class Game:
 
 
 if __name__ == "__main__":
-  game = Game()
+
+  color,player=welcome()
+  # print(color)
+  # print(player)
+
+  #now check the colors i can take 
+
+  #print(color)
+  #print(player)
+
+  colors=["Black","Brown","Pink","White","Red", "Blue", "Green", "Yellow", "Purple", "Orange"]
+
+  listc=[]
+
+  for col in colors:
+    if(len(listc)==player):
+      break
+    if(col!=colors[color-1]):
+      listc.append(col)
+
+  #for h in listc:
+   # print(h)
+  #now i have the color and number of players selection
+
+  game=Game()
   game.run()
+
+
+
+
+
+  
+
+    
