@@ -1,6 +1,9 @@
 import pygame
 from pytmx.util_pygame import load_pygame
 from os.path import join
+from bot import Bot
+
+bot_sprites = pygame.sprite.Group()
 
 from constants import *
 from groups import AllSprites
@@ -38,9 +41,14 @@ class Game:
       if obj.name == "Player":
         self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites)
 
+    for obj in game_map.get_layer_by_name("Entities"):
+      if obj.name == "Bot":
+        self.bot = Bot((obj.x, obj.y), self.all_sprites, self.collision_sprites, "random")
+
+
   def run(self):
     while self.running:
-      dt = self.clock.tick(40) / 1000
+      dt = self.clock.tick() / 1000
 
       # Event loop
       for event in pygame.event.get():
