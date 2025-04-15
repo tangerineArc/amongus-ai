@@ -1,17 +1,18 @@
 import pygame
+
 from pytmx.util_pygame import load_pygame
 from os.path import join
-from bot import Bot
-
-bot_sprites = pygame.sprite.Group()
-
 from constants import *
 from groups import AllSprites
-from player import Player
+
 from sprites import *
+
+from player import *
 
 from WELCOME import welcome
 
+#from global_knowledge import *
+import time
 
 class Game:
   def __init__(self):
@@ -22,76 +23,112 @@ class Game:
     self.running = True
 
     # groups
+
     self.all_sprites = AllSprites()
     self.collision_sprites = pygame.sprite.Group()
-
+    self.spawn_pos = []
+    self.surface_dim = []
     # setup
     self.setup()
+    # self.player=0
 
   def setup(self):
+    k = 0
+    count = 0
     game_map = load_pygame(join("data", "maps", "map.tmx"))
-
     for x, y, image in game_map.get_layer_by_name("Ground").tiles():
-      Sprite((x * TILE_SIZE, y * TILE_SIZE), image, self.all_sprites)
+        Sprite((x * TILE_SIZE, y * TILE_SIZE), image, self.all_sprites)
 
-    for obj in game_map.get_layer_by_name('Objects'):
-      CollisionSprite((obj.x, obj.y), pygame.Surface((obj.width, obj.height)), self.collision_sprites)
-
-    for obj in game_map.get_layer_by_name("Entities"):
-      if obj.name == "Player":
-        self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites)
+    for obj in game_map.get_layer_by_name("Objects"):
+        CollisionSprite((obj.x, obj.y), pygame.Surface((obj.width, obj.height)), self.collision_sprites)
 
     for obj in game_map.get_layer_by_name("Entities"):
-      if obj.name == "Bot":
-        self.bot = Bot((obj.x, obj.y), self.all_sprites, self.collision_sprites, "random")
+        if obj.name == "Player":
+            self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites)
+        elif obj.name == "Bot":
+            self.spawn_pos.append((obj.x, obj.y))
+            self.surface_dim.append((obj.width , obj.height))
+            count += 1
+            if count == player:  # ✅ Limit bots to player count
+                break
 
+    # ✅ Convert set to list for indexing
+    unique_colors = list(listc)
+    for i, (x, y) in enumerate(self.spawn_pos):
+        if (i < len(unique_colors)) :  # ✅ Prevents IndexError
+            bot = Bot((x, y),  self.all_sprites, self.collision_sprites, unique_colors[i],i,all_tasks)
+        
 
   def run(self):
     while self.running:
-      dt = self.clock.tick() / 1000
+        dt = self.clock.tick(40) / 1000  # Frame time
 
-      # Event loop
-      for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-          self.running = False
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.running = False
 
-      # draw
-      self.all_sprites.update(dt)
-      self.all_sprites.draw(self.player.rect.center)
+        # Update all sprites4
+        
+        self.all_sprites.update(dt)
+        #self.imposter_sprites.update(dt)
+        #self.bot_sprites.update(dt)
+        # Clear screen
+        self.display_surface.fill((30, 30, 30))
 
-      pygame.display.update()
+        # Draw game objects (with camera movement)
+        self.all_sprites.draw(self.player.rect.center)
+        #self.bot_sprites.draw(self.display_surface) 
+
+        pygame.display.update()
 
     pygame.quit()
 
 
+
 if __name__ == "__main__":
 
+  pygame.font.init()
+
   color,player=welcome()
-  # print(color)
+  print(color)
   # print(player)
+
+  # Game window setup
+  display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+  font = pygame.font.Font(None, 36)  # Set up a font for displaying text
 
   #now check the colors i can take 
 
   #print(color)
   #print(player)
 
-  colors=["Black","Brown","Pink","White","Red", "Blue", "Green", "Yellow", "Purple", "Orange"]
+  colors=["Black","Brown","Pink","White", "Blue", "Green", "Yellow", "Purple", "Orange"]
 
-  listc=[]
+  listc=set()
 
   for col in colors:
     if(len(listc)==player):
       break
     if(col!=colors[color-1]):
-      listc.append(col)
-
+      listc.add(col)
+  
+  unique_colors = list(listc)
+  
+  print(len(listc))
   #for h in listc:
    # print(h)
   #now i have the color and number of players selection
 
-  game=Game()
-  game.run()
+  #game_start_time = time.time()  # Store when the game starts
 
+  game=Game()  
+
+  # if(got_killed){
+  #    #call sus.py
+  #    #make appropriate changes 
+  #    #game=Game()
+  # }
+  game.run()
 
 
 

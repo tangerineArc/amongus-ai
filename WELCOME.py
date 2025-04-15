@@ -33,3 +33,4 @@ def welcome():
 
 
 #we have photos only for red,yellow,orange,green,blue
+
