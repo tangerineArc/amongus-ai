@@ -1,1 +1,0 @@
-https://docs.google.com/viewer?url=${https://drive.google.com/file/d/1k3f5QJAqZJ9mXq0-t5yqEuId0moEo84g/view?usp=sharing}
